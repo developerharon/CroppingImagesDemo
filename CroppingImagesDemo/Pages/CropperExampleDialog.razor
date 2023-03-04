@@ -1,0 +1,29 @@
+﻿@inherits ComponentBase
+
+<MudDialog>
+    <DialogContent>
+        @if (show)
+        {
+            <Cropper MaxCropedHeight="500" CropperHeight="400" MaxCropedWidth="500" @ref="cropper" AspectRatio="proportion==0?1:proportion"
+                 RequireAspectRatio="bool.Parse(enableProportion)" ImageFile="File" @bind-Ratio="ratio"
+                 AnimeGifEnable="true"
+                 OffsetX="offsetx"
+                 OffsetY="offsety"
+                 InitCropWidth="initw"
+                 InitCropHeight="inith"
+                 PureCSharpProcessing="purecs"
+                 IsCropLocked="isCropLocked"
+                 IsImageLocked="isImageLocked"
+                 Quality="quality"
+                 OnSizeChanged="t=>{
+                        width = t.Item1;
+                        height = t.Item2;
+                    }"></Cropper>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="DoneCrop" Variant="Variant.Filled" Color="Color.Primary">Done</MudButton>
+        <MudButton OnClick="SaveState" Variant="Variant.Filled" Color="Color.Primary">SaveState</MudButton>
+        <MudButton OnClick="RestoreState" Variant="Variant.Filled" Color="Color.Primary">RestoreState</MudButton>
+    </DialogActions>
+</MudDialog>
