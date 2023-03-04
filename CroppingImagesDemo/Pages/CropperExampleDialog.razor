@@ -5,7 +5,7 @@
         @if (show)
         {
             <Cropper MaxCropedHeight="500" CropperHeight="400" MaxCropedWidth="500" @ref="cropper" AspectRatio="proportion==0?1:proportion"
-                 RequireAspectRatio="bool.Parse(enableProportion)" ImageFile="File" @bind-Ratio="ratio"
+                 RequireAspectRatio="enableProportion" ImageFile="File" @bind-Ratio="ratio"
                  AnimeGifEnable="true"
                  OffsetX="offsetx"
                  OffsetY="offsety"

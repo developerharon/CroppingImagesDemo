@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazor.Cropper;
+using CroppingImagesDemo.DTOs;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using MudBlazor;
@@ -23,18 +25,30 @@ namespace CroppingImagesDemo.Pages
             if (jsRuntime is not null)
                 await jsRuntime.InvokeVoidAsync("console.log", DateTime.Now.ToString());
             file = args.File;
+            CropImage();
         }
 
-        private void CropImage()
+        private async void CropImage()
         {
-            var parameters = new DialogParameters();
-            parameters.Add("File", file);
-            parameters.Add("ButtonText", "Delete");
-            parameters.Add("Color", Color.Error);
+            var parameters = new DialogParameters
+            {
+                { "File", file }
+            };
 
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-            dialogService?.Show<CropperExampleDialog>("Crop Image", parameters, options);
+            var dialog = dialogService?.Show<CropperExampleDialog>("Crop Image", parameters, options);
+            
+            if (dialog is null) return;
+
+            var result = await dialog.Result;
+
+            if (result is null) return;
+            if (result.Canceled) return;
+
+            var dto = result.Data as CropperExampleDto;
+
+            await jsRuntime.SetImageAsync(dto.bs, "my-img", dto.args.Format.DefaultMimeType);
         }
     }
 }
